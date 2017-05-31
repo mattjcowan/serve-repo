@@ -1,0 +1,49 @@
+{
+  "name": "serve-repo",
+  "version": "1.0.0",
+  "description": "Serve a git repo as an api",
+  "main": "index.js",
+  "author": "mattjcowan (@mattjcowan)",
+  "license": "MIT",
+  "engines": {
+    "node": ">7.6.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattjcowan/serve-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mjczone/serve-repo/issues"
+  },
+  "homepage": "https://github.com/mjczone/serve-repo#readme",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "dotenv": "^4.0.0",
+    "download": "^5.0.2",
+    "front-matter": "^2.1.1",
+    "glob": "^7.1.1",
+    "highlight.js": "^9.9.0",
+    "marked": "^0.3.6",
+    "micro": "^6.1.0",
+    "pify": "^2.3.0",
+    "rimraf": "^2.5.4",
+    "uuid": "^3.0.1",
+    "yamljs": "^0.2.10"
+  },
+  "devDependencies": {
+    "chokidar": "^1.6.1",
+    "eslint": "^3.12.2",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "dev": "nodemon --watch *.js --exec 'node --harmony api.js'",
+    "lint": "eslint --fix *.js",
+    "start": "node --harmony api.js",
+    "precommit": "npm run lint",
+    "deploy": "now rm serve-repo && now && now alias",
+    "logs": "now logs -f serve-repo"
+  }
+}

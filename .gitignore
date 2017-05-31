@@ -1,0 +1,11 @@
+# env
+.env
+
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# dist folder
+dist
