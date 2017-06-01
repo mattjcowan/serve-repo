@@ -41,7 +41,7 @@ module.exports = async function ({ req, res }, loadFiles) {
   if (process.env.GITHUB_TOKEN) {
     downloadOptions.headers = { 'Authorization': `token ${process.env.GITHUB_TOKEN}` }
   }
-  await download('https://api.github.com/repos/mattjcowan/serve-repo/zipball/master', clonePath, downloadOptions)
+  await download(`https://api.github.com/repos/${process.env.GITHUB_REPO}/zipball/master`, clonePath, downloadOptions)
   clonePath = resolve(clonePath, getDirectories(clonePath)[0])
   await loadFiles(clonePath)
   console.log('Contents updated!')

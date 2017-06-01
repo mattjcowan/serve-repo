@@ -10,6 +10,7 @@ const highlightjs = require('highlight.js')
 const fm = require('front-matter')
 const { resolve } = require('path')
 const githubHook = require('./gh-hook')
+const githubPull = require('./gh-pull')
 const readFile = pify(fs.readFile)
 const YAML = require('yamljs')
 const send = micro.send
@@ -131,6 +132,13 @@ const server = micro(async function (req, res) {
   if (req.method === 'POST' && req.url === '/hook') {
     try {
       return await githubHook({ req, res }, loadFiles)
+    } catch (e) {
+      console.error('Error!')
+      console.error(e)
+    }
+  } else if (req.url === '/pull') {
+    try {
+      return await githubPull({ req, res }, loadFiles)
     } catch (e) {
       console.error('Error!')
       console.error(e)

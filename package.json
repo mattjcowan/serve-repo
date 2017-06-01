@@ -16,6 +16,19 @@
     "url": "https://github.com/mjczone/serve-repo/issues"
   },
   "homepage": "https://github.com/mjczone/serve-repo#readme",
+  "now": {
+    "name": "serve-repo",
+    "alias": "serve-repo",
+    "engines": {
+      "node": "7.7.x"
+    },
+    "env": {
+      "NODE_ENV": "production",
+      "GITHUB_REPO": "mattjcowan/serve-repo",
+      "GITHUB_TOKEN": "@github-token",
+      "GH_HOOK_SECRET": "@gh-hook-secret"
+    }
+  },
   "dependencies": {
     "axios": "^0.15.3",
     "dotenv": "^4.0.0",
@@ -27,6 +40,7 @@
     "micro": "^6.1.0",
     "pify": "^2.3.0",
     "rimraf": "^2.5.4",
+    "simple-git": "^1.73.0",
     "uuid": "^3.0.1",
     "yamljs": "^0.2.10"
   },
