@@ -15,26 +15,25 @@ module.exports = async function ({ req, res }, loadFiles) {
 
   fs.mkdirSync(clonePath)
   const repoPath = `https://${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPO}.git`
-  console.log(`Cloning repository: ${process.env.GITHUB_REPO} ...`)
   let git = simpleGit(clonePath)
-  try {
-    // clone the repo
-    await git.clone(repoPath, 'repo')
 
-    // update the file system
-    const localPath = join(clonePath, 'repo')
-    fs.writeFileSync(localPath + '/en/commit.yaml', 'id: ' + uuid())
+  // clone the repo
+  console.log(`Cloning repository: ${process.env.GITHUB_REPO} ...`)
+  await git.clone(repoPath, 'repo')
 
-    // push changes
-    await simpleGit(localPath)
-            .add('./*')
-            .commit('Automated commit')
-            .push('origin', 'master')
+  // update the file system
+  console.log('Updating contents of repository')
+  const localPath = join(clonePath, 'repo')
+  fs.writeFileSync(localPath + '/en/commit.yaml', 'id: ' + uuid())
 
-    console.log('Contents updated!')
-    await rimraf(clonePath)
-    send(res, 200, 'OK')
-  } catch (err) {
-    console.log(err)
-  }
+  // push changes
+  console.log('Pushing changes to repository')
+  await simpleGit(localPath)
+          .add('./*')
+          .commit('Automated commit')
+          .push('origin', 'master')
+
+  console.log('Contents updated!')
+  await rimraf(clonePath)
+  send(res, 200, 'OK')
 }

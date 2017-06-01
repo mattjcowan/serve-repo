@@ -57,7 +57,7 @@
     "lint": "eslint --fix *.js",
     "start": "node --harmony api.js",
     "precommit": "npm run lint",
-    "deploy": "now rm serve-repo && now && now alias",
+    "deploy": "now rm serve-repo --yes && now --public && now alias",
     "logs": "now logs -f serve-repo"
   }
 }
