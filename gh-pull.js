@@ -27,12 +27,13 @@ module.exports = async function ({ req, res }, loadFiles) {
 
   // update the file system
   console.log('Updating contents of repository')
-  fs.appendFileSync(join(clonePath, 'en/commit.yaml'), '- id: ' + uuid() + '\n  time: ' + JSON.stringify(new Date()) + '\n')
+  const id = uuid()
+  fs.appendFileSync(join(clonePath, 'en/commit.yaml'), '- id: ' + id + '\n  time: ' + JSON.stringify(new Date()) + '\n')
 
   // push changes
   console.log('Pushing changes to repository')
   await git.add('./*')
-  await git.commit('Automated commit')
+  await git.commit('Automated commit (' + id + ')')
   await git.push('origin', 'master')
 
   console.log('Contents updated!')
