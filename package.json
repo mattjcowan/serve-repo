@@ -26,6 +26,8 @@
       "NODE_ENV": "production",
       "GITHUB_REPO": "mattjcowan/serve-repo",
       "GITHUB_TOKEN": "@github-token",
+      "GITHUB_USERNAME": "@github-username",
+      "GITHUB_EMAIL": "@github-email",
       "GH_HOOK_SECRET": "@gh-hook-secret"
     }
   },

@@ -4,34 +4,36 @@ const os = require('os')
 const uuid = require('uuid/v4')
 const pify = require('pify')
 const rimraf = pify(require('rimraf'))
-const { join, resolve } = require('path')
+const { resolve } = require('path')
 const fs = require('fs')
-const simpleGit = require('simple-git')
+const simpleGit = require('simple-git/promise')
 const send = micro.send
 
 // Refresh files (pull from GitHub)
 module.exports = async function ({ req, res }, loadFiles) {
   let clonePath = resolve(os.tmpdir(), uuid())
 
-  fs.mkdirSync(clonePath)
+  await fs.mkdir(clonePath)
   const repoPath = `https://${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPO}.git`
   let git = simpleGit(clonePath)
 
   // clone the repo
   console.log(`Cloning repository: ${process.env.GITHUB_REPO} ...`)
-  await git.clone(repoPath, 'repo')
+  await git.init()
+  await git.addConfig('user.name', process.env.GITHUB_USERNAME)
+  await git.addConfig('user.email', process.env.GITHUB_EMAIL)
+  await git.addRemote('origin', repoPath)
+  await git.pull('origin', 'master')
 
   // update the file system
   console.log('Updating contents of repository')
-  const localPath = join(clonePath, 'repo')
-  fs.writeFileSync(localPath + '/en/commit.yaml', 'id: ' + uuid())
+  await fs.appendFile(clonePath + '/en/commit.yaml', '- id: ' + uuid() + '\n  time: ' + JSON.stringify(new Date()))
 
   // push changes
   console.log('Pushing changes to repository')
-  await simpleGit(localPath)
-          .add('./*')
-          .commit('Automated commit')
-          .push('origin', 'master')
+  await git.add('./*')
+  await git.commit('Automated commit')
+  await git.push('origin', 'master')
 
   console.log('Contents updated!')
   await rimraf(clonePath)

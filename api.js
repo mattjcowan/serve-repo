@@ -135,6 +135,7 @@ const server = micro(async function (req, res) {
     } catch (e) {
       console.error('Error!')
       console.error(e)
+      return send(res, 500, { error: e.message || 'Unknown server error' })
     }
   } else if (req.url === '/pull') {
     try {
@@ -142,6 +143,7 @@ const server = micro(async function (req, res) {
     } catch (e) {
       console.error('Error!')
       console.error(e)
+      return send(res, 500, { error: e.message || 'Unknown server error' })
     }
   } else {
     res.setHeader('Access-Control-Allow-Origin', '*')
