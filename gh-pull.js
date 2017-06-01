@@ -38,5 +38,5 @@ module.exports = async function ({ req, res }, loadFiles) {
 
   console.log('Contents updated!')
   await rimraf(clonePath)
-  send(res, 200, 'OK')
+  return send(res, 200, 'OK')
 }
