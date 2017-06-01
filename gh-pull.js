@@ -4,7 +4,7 @@ const os = require('os')
 const uuid = require('uuid/v4')
 const pify = require('pify')
 const rimraf = pify(require('rimraf'))
-const { resolve } = require('path')
+const { join, resolve } = require('path')
 const fs = require('fs')
 const simpleGit = require('simple-git/promise')
 const send = micro.send
@@ -13,7 +13,7 @@ const send = micro.send
 module.exports = async function ({ req, res }, loadFiles) {
   let clonePath = resolve(os.tmpdir(), uuid())
 
-  await fs.mkdir(clonePath)
+  fs.mkdirSync(clonePath)
   const repoPath = `https://${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPO}.git`
   let git = simpleGit(clonePath)
 
@@ -27,7 +27,7 @@ module.exports = async function ({ req, res }, loadFiles) {
 
   // update the file system
   console.log('Updating contents of repository')
-  await fs.appendFile(clonePath + '/en/commit.yaml', '- id: ' + uuid() + '\n  time: ' + JSON.stringify(new Date()))
+  fs.appendFileSync(join(clonePath, 'en/commit.yaml'), '- id: ' + uuid() + '\n  time: ' + JSON.stringify(new Date()) + '\n')
 
   // push changes
   console.log('Pushing changes to repository')
